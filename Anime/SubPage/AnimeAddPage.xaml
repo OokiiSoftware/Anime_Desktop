@@ -1,0 +1,45 @@
+﻿<UserControl
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Anime.SubPage"
+      xmlns:ferramentas="clr-namespace:Anime.Ferramentas"
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" x:Class="Anime.SubPage.AnimeAddPage"
+      mc:Ignorable="d"
+      Background="#FF252525" Width="379" PreviewKeyUp="UserControl_PreviewKeyUp">
+
+    <Grid Margin="5">
+        <WrapPanel HorizontalAlignment="Right" Margin="0,210,0,0" VerticalAlignment="Top" Orientation="Vertical" Width="95">
+            <Label x:Name="lbTv" Content="1 - TV" Background="{x:Null}" Foreground="White" FontSize="16"/>
+            <Label x:Name="lbMovie" Content="2 - Movie" Background="{x:Null}" Foreground="White" FontSize="16"/>
+            <Label x:Name="lbOna" Content="3 - Ona" Background="{x:Null}" Foreground="White" FontSize="16"/>
+            <Label x:Name="lbOva" Content="4 - Ova" Background="{x:Null}" Foreground="White" FontSize="16"/>
+            <Label x:Name="lbSpecial" Content="5 - Special" Background="{x:Null}" Foreground="White" FontSize="16"/>
+            <Label x:Name="lbIndefinido" Content="6 - Indefinido" Background="{x:Null}" Foreground="White" FontSize="14"/>
+        </WrapPanel>
+        <xctk:DateTimePicker BorderBrush="{x:Null}" Margin="0,160,0,0" Height="31" Background="White" x:Name="datePicker" AllowTextInput="False" AutoCloseCalendar="True" CalendarDisplayMode="Year" ShowButtonSpinner="False" ValueChanged="DatePicker_ValueChanged" Format="ShortDate" VerticalAlignment="Top" HorizontalAlignment="Right" Width="85.979"/>
+        <Button x:Name="btnLimparTudo" Content="Limpar Tudo" HorizontalAlignment="Right" Height="33" Margin="0,120,0,0" VerticalAlignment="Top" Width="85.979" BorderBrush="{x:Null}" Click="BtnLimparTudo_Click" Background="White"/>
+        <Button x:Name="btnSave" Content="Salvar" HorizontalAlignment="Right" Height="115" VerticalAlignment="Top" Width="85.979" BorderBrush="{x:Null}" Click="BtnSave_Click" Background="White"/>
+        <WrapPanel x:Name="wrap" Orientation="Vertical" Margin="0,0,100,0">
+            <ferramentas:CustomTextbox BorderBrush="{x:Null}" Margin="0,5,0,3" MaxLines="1" FontSize="16" Width="{Binding ActualWidth, ElementName=wrap}" x:Name="tbLetra" Hint="Letra" MaxLength="1"/>
+            <ferramentas:CustomTextbox BorderBrush="{x:Null}" Margin="0,5,0,3" MaxLines="1" FontSize="16" Width="{Binding ActualWidth, ElementName=wrap}" x:Name="tbId" Hint="ID Pai" TextImput="Number"/>
+            <ferramentas:CustomTextbox BorderBrush="{x:Null}" Margin="0,5,0,3" MaxLines="1" FontSize="16" Width="{Binding ActualWidth, ElementName=wrap}" x:Name="tbNomePai" Hint="Nome Pai"/>
+            <ferramentas:CustomTextbox BorderBrush="{x:Null}" Margin="0,5,0,3" MaxLines="1" FontSize="16" Width="{Binding ActualWidth, ElementName=wrap}" x:Name="tbNomePai2" Hint="Nome Pai 2"/>
+            <ferramentas:CustomTextbox BorderBrush="{x:Null}" Margin="0,5,0,3" MaxLines="1" FontSize="16" Width="{Binding ActualWidth, ElementName=wrap}" x:Name="tbGeneros" Hint="Generos Pai"/>
+            <ferramentas:CustomTextbox BorderBrush="{x:Null}" Margin="0,5,0,3" MaxLines="1" FontSize="16" Width="{Binding ActualWidth, ElementName=wrap}" x:Name="tbParentes" Hint="Parentes"/>
+            <Border BorderThickness="1" Height="4" Width="{Binding ActualWidth, ElementName=wrap}" Background="White" Margin="0,0,0,5"/>
+            <ferramentas:CustomTextbox BorderBrush="{x:Null}" Margin="0,5,0,3" MaxLines="1" FontSize="16" Width="{Binding ActualWidth, ElementName=wrap}" x:Name="tbNome" Hint="Nome"/>
+            <ferramentas:CustomTextbox BorderBrush="{x:Null}" Margin="0,5,0,3" MaxLines="1" FontSize="16" Width="{Binding ActualWidth, ElementName=wrap}" x:Name="tbNome2" Hint="Nome 2"/>
+            <ferramentas:CustomTextbox BorderBrush="{x:Null}" Margin="0,5,0,3" MaxLines="1" FontSize="16" Width="{Binding ActualWidth, ElementName=wrap}" x:Name="tbLink" Hint="Link"/>
+            <ferramentas:CustomTextbox BorderBrush="{x:Null}" Margin="0,5,0,3" MaxLines="1" FontSize="16" Width="{Binding ActualWidth, ElementName=wrap}" x:Name="tbMini" Hint="Miniatura"/>
+            <ferramentas:CustomTextbox BorderBrush="{x:Null}" Margin="0,5,0,3" MaxLines="1" FontSize="16" Width="{Binding ActualWidth, ElementName=wrap}" x:Name="tbFoto" Hint="Foto"/>
+            <ferramentas:CustomTextbox BorderBrush="{x:Null}" Margin="0,5,0,3" MaxLines="1" FontSize="16" Width="{Binding ActualWidth, ElementName=wrap}" x:Name="tbData" Hint="Data" TextImput="Data"/>
+            <ferramentas:CustomTextbox BorderBrush="{x:Null}" Margin="0,5,0,3" MaxLines="1" FontSize="16" Width="{Binding ActualWidth, ElementName=wrap}" x:Name="tbEps" Hint="Eps" TextImput="Number"/>
+            <ComboBox x:Name="cbTipo" Margin="0,5,0,3" FontSize="16" Width="{Binding ActualWidth, ElementName=wrap}"/>
+            <ferramentas:CustomTextbox BorderBrush="{x:Null}" Margin="0,5,0,3" MaxHeight="100" FontSize="16" Width="{Binding ActualWidth, ElementName=wrap}" x:Name="tbSinopse" Hint="Sinopse" AcceptsReturn="True" TextWrapping="Wrap"/>
+            <Label x:Name="log" Background="{x:Null}" Foreground="White"/>
+        </WrapPanel>
+
+    </Grid>
+</UserControl>

@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="Anime.Ferramentas.AnimeItemLayout"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Anime.Ferramentas"
+             mc:Ignorable="d" Background="#FF1F1F1F">
+    <Grid>
+        <Image x:Name="foto" HorizontalAlignment="Left" Height="213.177" VerticalAlignment="Top" Width="135.871" Stretch="UniformToFill"/>
+        <WrapPanel Margin="140.871,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Orientation="Vertical">
+            <TextBox x:Name="id" TextWrapping="Wrap" Text="id" Foreground="White" VerticalContentAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" IsReadOnly="True" FontSize="16" MaxLines="1" MaxLength="250"/>
+            <TextBox x:Name="nome" TextWrapping="Wrap" Text="Nome" Foreground="White" VerticalContentAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" IsReadOnly="True" FontSize="16" MaxLines="1" MaxLength="250"/>
+            <TextBox x:Name="nome2" TextWrapping="Wrap" Text="Nome2" Foreground="White" VerticalContentAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" IsReadOnly="True" FontSize="16" MaxLines="1" MaxLength="250"/>
+            <TextBox x:Name="tipo" TextWrapping="Wrap" Text="tipo" Foreground="White" VerticalContentAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" IsReadOnly="True" FontSize="16" MaxLines="1" MaxLength="250"/>
+            <TextBox x:Name="eps" TextWrapping="Wrap" Text="eps" Foreground="White" VerticalContentAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" IsReadOnly="True" FontSize="16" MaxLines="1" MaxLength="250"/>
+            <TextBox x:Name="data" TextWrapping="Wrap" Text="data" Foreground="White" VerticalContentAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" IsReadOnly="True" FontSize="16" MaxLines="1" MaxLength="250"/>
+            <TextBox x:Name="parentes" TextWrapping="Wrap" Text="parentes" Foreground="White" VerticalContentAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" IsReadOnly="True" FontSize="16" MaxLines="1" MaxLength="250"/>
+            <TextBox x:Name="sinopse" TextWrapping="Wrap" Text="sinopse" Foreground="White" VerticalContentAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" IsReadOnly="True" FontSize="16" MaxLines="1" MaxLength="250"/>
+        </WrapPanel>
+    </Grid>
+</UserControl>

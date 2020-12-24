@@ -1,0 +1,8 @@
+{
+	"nome": "Anime",
+	"email": "",
+	"email_senha": "",
+	"api_key": "AIzaSyA5Gwz7yFccSI8rBSams7IAUADOv68wJcQ",
+	"databaseURL": "https://anime-oki.firebaseio.com",
+	"storageURL": "anime-oki.appspot.com"
+}

@@ -1,0 +1,14 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Anime"
+        xmlns:SubPage="clr-namespace:Anime.SubPage" x:Class="Anime.MainWindow"
+        mc:Ignorable="d"
+        Title="Anime" Background="#FF252525" MinWidth="900" MinHeight="650" SizeChanged="Window_SizeChanged" Width="1042.5" Height="650" WindowState="Maximized">
+    <Grid>
+        <Grid x:Name="gdList" HorizontalAlignment="Left" Width="421.69"/>
+        <SubPage:AnimeAddPage x:Name="pgAdd" HorizontalAlignment="Right" Width="421.69"/>
+    </Grid>
+</Window>

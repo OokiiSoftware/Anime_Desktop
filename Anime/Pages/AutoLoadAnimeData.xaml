@@ -1,0 +1,19 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Anime.Pages"
+        xmlns:Ferramentas="clr-namespace:Anime.Ferramentas" x:Class="Anime.Pages.AutoLoadAnimeData"
+        mc:Ignorable="d"
+        Title="Auto Load Data" ResizeMode="NoResize" SizeToContent="WidthAndHeight">
+    <Grid>
+        <Button x:Name="btnIniciar" Content="Iniciar" HorizontalAlignment="Left" Margin="10,77,0,10" Width="108.747" Background="#FFDDDDDD" BorderBrush="{x:Null}" Click="BtnIniciar_Click" Height="41.606" VerticalAlignment="Bottom"/>
+
+        <Ferramentas:CustomTextbox x:Name="tbLetra" HorizontalAlignment="Left" Height="30.657" Margin="10,10,0,0" VerticalAlignment="Top" Width="58.747" Hint="Letra" MaxLength="1" MaxLines="1"/>
+        <Ferramentas:CustomTextbox x:Name="tbId" HorizontalAlignment="Left" Height="30.657" Margin="10,45.657,0,0" VerticalAlignment="Top" Width="108.747" Hint="id" MaxLines="1" TextImput="Number" MaxLength="2000"/>
+        <Ferramentas:CustomTextbox x:Name="tbLinks" Margin="123.747,10,10,10" Hint="Links" MaxLength="80000" MaxLines="200" MinWidth="260" d:LayoutOverrides="TopMargin, BottomMargin" AcceptsReturn="True" VerticalContentAlignment="Top"/>
+        <Button x:Name="btnTraduzir" Content="Testar&#xD;&#xA;Tradutor" Margin="68.747,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="50" BorderBrush="{x:Null}" FontSize="9" Height="30.657" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="BtnTraduzir_Click"/>
+
+    </Grid>
+</Window>
