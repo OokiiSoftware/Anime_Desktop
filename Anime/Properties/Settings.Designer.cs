@@ -70,5 +70,29 @@ namespace Anime.Properties {
                 this["quantList"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string currentLinks {
+            get {
+                return ((string)(this["currentLinks"]));
+            }
+            set {
+                this["currentLinks"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int currentID {
+            get {
+                return ((int)(this["currentID"]));
+            }
+            set {
+                this["currentID"] = value;
+            }
+        }
     }
 }

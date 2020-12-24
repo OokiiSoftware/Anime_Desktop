@@ -18,8 +18,8 @@ namespace Anime.Modelo
         public string link { get; set; }
         public string sinopse { get; set; }
         public string data { get; set; }
-        public string maturidade { get; set; }
         public int episodios { get; set; }
+        public string maturidade { get; set; }
         public double pontosBase { get; set; }
         public string tipo { get; set; } = AnimeType.INDEFINIDO.ToString();
     }
@@ -49,12 +49,16 @@ namespace Anime.Modelo
             tipo = item.tipo;
             sinopse = item.sinopse;
             episodios = item.episodios;
+            maturidade = item.maturidade;
+            pontosBase = item.pontosBase;
         }
         public string id { get; set; }
         public string foto { get; set; }
         public string link { get; set; }
         public int episodios { get; set; }
         public string sinopse { get; set; }
+        public string maturidade { get; set; }
+        public double pontosBase { get; set; }
         public string tipo { get; set; } = AnimeType.INDEFINIDO.ToString();
     }
 

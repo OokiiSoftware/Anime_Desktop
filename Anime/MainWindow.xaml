@@ -9,6 +9,8 @@
         Title="Anime" Background="#FF252525" MinWidth="900" MinHeight="650" SizeChanged="Window_SizeChanged" Width="1042.5" Height="650" WindowState="Maximized">
     <Grid>
         <Grid x:Name="gdList" HorizontalAlignment="Left" Width="421.69"/>
-        <SubPage:AnimeAddPage x:Name="pgAdd" HorizontalAlignment="Right" Width="421.69"/>
+        <Frame x:Name="frame" HorizontalAlignment="Right" Width="421" Margin="0,49.027,0,0" NavigationUIVisibility="Hidden"/>
+        <Button x:Name="btnAutoAdd" Content="Auto Add" HorizontalAlignment="Right" Height="44.027" Margin="0,0,211.371,0" VerticalAlignment="Top" Width="209.629" Click="BtnAutoAdd_Click" BorderBrush="{x:Null}"/>
+        <Button x:Name="btnManualAdd" Content="Manual Add" HorizontalAlignment="Right" Height="44.027" Margin="0,0,1.742,0" VerticalAlignment="Top" Width="209.629" Click="BtnManualAdd_Click" BorderBrush="{x:Null}"/>
     </Grid>
 </Window>

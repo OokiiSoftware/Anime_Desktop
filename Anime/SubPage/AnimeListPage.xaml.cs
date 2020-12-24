@@ -23,7 +23,6 @@ namespace Anime.SubPage
         private AnimeCollection currentAnimeCollection;
 
         private TestesPage testesPage;
-        private AutoLoadAnimeData AutoAddPage;
         private double width = 700;
         private bool isCollectionList = false;
 
@@ -53,22 +52,43 @@ namespace Anime.SubPage
             var allListC = new Dictionary<string, AnimeCollection.Complemento>();
             var allListB = new Dictionary<string, AnimeCollection.Basico>();
             string[] filtros = { "json" };
-            var letras = Import.GetArquivosDaPasta(Paths.FILES_PATH, filtros);
+            var letras = new List<string>();
             int childsCount = 0;
 
-            foreach (string letraFile in letras)
+            try
             {
-                string letra = Path.GetFileNameWithoutExtension(letraFile);
-                var listTemp = AnimeCollection.LoadFileList(letra);
-                foreach (var key in listTemp.Keys)
-                    if (!allListC.ContainsKey(key))
-                    {
-                        allListC.Add(key, new AnimeCollection.Complemento(listTemp[key]));
-                        allListB.Add(key, new AnimeCollection.Basico(listTemp[key]));
-                        childsCount += listTemp[key].items.Count;
-                    }
-                    else Log.Msg(TAG, "BtnPublicar", "Key duplicado", key);
+                letras.AddRange(Import.GetArquivosDaPasta(Paths.FILES_PATH, filtros));
             }
+            catch (Exception ex)
+            {
+                Log.Erro(TAG, ex);
+                MessageBox.Show(ex.Message, "ERRO ao ler a pasta de arquivos", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            try
+            {
+                foreach (string letraFile in letras)
+                {
+                    string letra = Path.GetFileNameWithoutExtension(letraFile);
+                    var listTemp = AnimeCollection.LoadFileList(letra);
+                    foreach (var key in listTemp.Keys)
+                        if (!allListC.ContainsKey(key))
+                        {
+                            allListC.Add(key, new AnimeCollection.Complemento(listTemp[key]));
+                            allListB.Add(key, new AnimeCollection.Basico(listTemp[key]));
+                            childsCount += listTemp[key].items.Count;
+                        }
+                        else Log.Msg(TAG, "BtnPublicar", "Key duplicado", key);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Erro(TAG, ex);
+                MessageBox.Show(ex.Message, "ERRO ao ler arquivos", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            
 
             Log.Msg(TAG, "BtnPublicar", "Load OK > PaisCount: " + allListC.Count, "ChildsCount: " + childsCount);
 
@@ -89,7 +109,7 @@ namespace Anime.SubPage
             }
             catch (Exception ex) {
                 Log.Erro(TAG, ex);
-                MessageBox.Show(ex.Message, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message, "ERRO ao publicar", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         
@@ -99,20 +119,6 @@ namespace Anime.SubPage
             {
                 testesPage = new TestesPage();
                 testesPage.Show();
-            }
-            else
-            {
-                MessageBox.Show("Esta janela ja está aberta", "Ops", MessageBoxButton.OK);
-            }
-        }
-
-        private void BtnPageAutoLoad_Click(object sender, RoutedEventArgs e)
-        {
-            if (AutoAddPage == null || !AutoAddPage.IsVisible)
-            {
-                var AutoAddPage = new AutoLoadAnimeData();
-                AutoAddPage.OnAddItem += AddItem;
-                AutoAddPage.Show();
             }
             else
             {

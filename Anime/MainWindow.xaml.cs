@@ -7,7 +7,11 @@ namespace Anime
 {
     public partial class MainWindow : Window
     {
+        #region Variaveis
         private AnimeListPage animeList;
+        private AnimeAddPage pgAdd;
+        private AutoLoadAnimeData loadAnimeData;
+        #endregion
 
         public MainWindow()
         {
@@ -15,19 +19,35 @@ namespace Anime
             Init();
         }
 
+        #region Eventos
+
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             double width = e.NewSize.Width;
             double metade = width / 2 - 15;
             gdList.Width = metade;
-            pgAdd.Width = metade;
+            frame.Width = metade;
         }
+
+        private void BtnAutoAdd_Click(object sender, RoutedEventArgs e)
+        {
+            frame.Content = loadAnimeData;
+        }
+
+        private void BtnManualAdd_Click(object sender, RoutedEventArgs e)
+        {
+            frame.Content = pgAdd;
+        }
+
+        #endregion
+
+        #region Metodos
 
         private async void Init()
         {
             string user = Properties.Settings.Default.user;
             string password = Properties.Settings.Default.password;
-            Log.Msg("Main", user, password);
+
             if (user.Trim().Equals("") || password.Trim().Equals(""))
             {
                 LoginPopup();
@@ -54,14 +74,31 @@ namespace Anime
 
         private void OnLoginSucess()
         {
-            animeList = new AnimeListPage();
+            loadAnimeData = new AutoLoadAnimeData
+            {
+                Margin = new Thickness(0),
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Top,
+            };
+            animeList = new AnimeListPage
+            {
+                Margin = new Thickness(0),
+                HorizontalAlignment = HorizontalAlignment.Stretch
+            };
+            pgAdd = new AnimeAddPage
+            {
+                Margin = new Thickness(0),
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Top,
+            };
 
-            animeList.HorizontalAlignment = HorizontalAlignment.Stretch;
-
-            animeList.Margin = new Thickness(0);
-
+            loadAnimeData.OnAddItem += (item) => animeList.AddItem(item);
             pgAdd.OnAddItem += (item) => animeList.AddItem(item);
+
             gdList.Children.Add(animeList);
+            frame.Content = loadAnimeData;
         }
+
+        #endregion
     }
 }

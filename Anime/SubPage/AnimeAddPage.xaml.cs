@@ -1,9 +1,6 @@
-﻿using Anime.Auxiliar;
-using Anime.Modelo;
-using Newtonsoft.Json;
+﻿using Anime.Modelo;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
