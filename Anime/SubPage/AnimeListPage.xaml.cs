@@ -113,19 +113,6 @@ namespace Anime.SubPage
             }
         }
         
-        private void BtnBuscarErros_Click(object sender, RoutedEventArgs e)
-        {
-            if (testesPage == null || !testesPage.IsVisible)
-            {
-                testesPage = new TestesPage();
-                testesPage.Show();
-            }
-            else
-            {
-                MessageBox.Show("Esta janela ja está aberta", "Ops", MessageBoxButton.OK);
-            }
-        }
-
         #endregion
 
         #region Metodos

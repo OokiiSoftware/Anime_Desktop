@@ -5,11 +5,16 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
+using System.Windows;
 
 namespace Anime.Auxiliar
 {
     public class Import
     {
+        private const string TAG = "Import";
+        private static Dictionary<string, string> caracteresEspeciais;
+
         public static List<string> GetArquivosDaPasta(string pastaRaiz, string[] filtros = null, bool isRecursiva = true)
         {
             var arquivosEncontrados = new List<string>();
@@ -39,6 +44,86 @@ namespace Anime.Auxiliar
                 return null;
             }
         }
+
+        public static string RemoverSimbolos(string value, bool copySimbolo = false, bool isPtBr = true)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return value;
+
+            string temp = HttpUtility.HtmlDecode(value);
+
+            foreach (var t in caracteresEspeciais)
+                temp = temp.Replace(t.Key, t.Value);
+
+            if (!isPtBr && temp.Contains("â"))
+            {
+                string caractere = temp.Substring(temp.IndexOf("â"), 3);
+                if (copySimbolo)
+                    Clipboard.SetText(caractere);
+
+                if (caracteresEspeciais == null)
+                    if (!LoadCaracteresEspeciais())
+                        throw new Exception($"CaracteresEspecial.json não encontrado");
+
+                if (!caracteresEspeciais.ContainsKey(caractere))
+                {
+                    var result = MessageBox.Show(
+                    temp + "\n\nDeseja Ler os caracteres especiais novamente?",
+                    "Caractere Especial",
+                    MessageBoxButton.YesNoCancel,
+                    MessageBoxImage.Exclamation);
+
+                    switch (result)
+                    {
+                        case MessageBoxResult.Cancel:
+                            throw new Exception("Caractere Especial");
+                        case MessageBoxResult.Yes:
+                            LoadCaracteresEspeciais();
+                            break;
+                        case MessageBoxResult.No:
+                            return temp;
+                    }
+                }
+
+                if (!caracteresEspeciais.ContainsKey(caractere))
+                    return RemoverSimbolos(value, copySimbolo);
+                temp = temp.Replace(caractere, caracteresEspeciais[caractere]);
+
+                return RemoverSimbolos(temp, copySimbolo);
+
+            }
+            return temp;
+            //.Replace("\r", "")
+            //.Replace("<i>", "")
+            //.Replace("</i>", "")
+            //.Replace("<br>", "")
+            //.Replace("<br/>", "")
+            //.Replace("<br />", "")
+            //.Replace("â˜…", "★")
+            //.Replace("â˜†", "☆")
+            //.Replace("â™¥", "♥")
+            //.Replace("â€“", "–");
+        }
+
+        public static bool LoadCaracteresEspeciais()
+        {
+            string CaracteresEspeciais = "CaracteresEspeciais.json";
+            if (!File.Exists(CaracteresEspeciais))
+                return false;
+
+            try
+            {
+                string jsonS = File.ReadAllText(CaracteresEspeciais);
+                caracteresEspeciais = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonS);
+            }
+            catch (Exception ex)
+            {
+                Log.Erro(TAG, ex);
+            }
+
+            return true;
+        }
+
     }
 
     public class Paths

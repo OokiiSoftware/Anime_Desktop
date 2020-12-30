@@ -85,10 +85,10 @@ namespace Anime.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int currentID {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string currentID {
             get {
-                return ((int)(this["currentID"]));
+                return ((string)(this["currentID"]));
             }
             set {
                 this["currentID"] = value;

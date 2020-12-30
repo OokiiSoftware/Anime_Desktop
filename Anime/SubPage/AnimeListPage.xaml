@@ -18,7 +18,6 @@
         <WrapPanel HorizontalAlignment="Right" Margin="0,0,21.236,0" Width="60">
             <Button x:Name="btnAtualizar" Content="Atualizar" Height="52.708" Width="59.736" BorderBrush="{x:Null}" Click="BtnAtualizar_Click" />
             <Button x:Name="btnPublicar" Content="Publicar" Height="52.708" Width="59.736" BorderBrush="{x:Null}" Click="BtnPublicar_Click" />
-            <Button x:Name="btnBuscarErros" Content="Buscar Erros" Height="52.708" Width="59.736" BorderBrush="{x:Null}" Click="BtnBuscarErros_Click" />
         </WrapPanel>
     </Grid>
 </UserControl>

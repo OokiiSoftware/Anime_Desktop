@@ -1,30 +1,30 @@
-﻿<Window x:Class="Anime.Pages.TestesPage"
+﻿<UserControl x:Class="Anime.Pages.TestesPage"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Anime.Pages"
-        mc:Ignorable="d"
-        Title="Procurar erros" ResizeMode="NoResize" SizeToContent="WidthAndHeight">
+        mc:Ignorable="d">
     <Grid>
         <WrapPanel Orientation="Vertical" Margin="10">
-            <CheckBox x:Name="cbVariaveis" Content="Variaveis"/>
-            <CheckBox x:Name="cbMiniaturas" Content="Miniaturas" Checked="CbMiniaturas_Checked" Unchecked="CbMiniaturas_Unchecked"/>
-            <CheckBox x:Name="cbFotos" Content="Fotos" Unchecked="CbFotos_Unchecked" Checked="CbFotos_Checked"/>
-            <CheckBox x:Name="cbSalvarFotos" Content="Salvar Fotos" Visibility="Collapsed"/>
-            <CheckBox x:Name="cbSalvarMiniaturas" Content="Salvar Miniaturas" Visibility="Collapsed"/>
-            <CheckBox x:Name="cbOverride" Content="Sobrescrever" Visibility="Collapsed"/>
+            <CheckBox x:Name="cbVariaveis" Content="Variaveis" Checked="CbVariaveis_Checked" Unchecked="CbVariaveis_Unchecked" Foreground="White" BorderBrush="{x:Null}" Background="White"/>
+            <CheckBox x:Name="cbConsertar" Content="Consertar Problemas" Visibility="Collapsed" Foreground="White" BorderBrush="{x:Null}" Background="White"/>
+            <CheckBox x:Name="cbMiniaturas" Content="Miniaturas" Checked="CbMiniaturas_Checked" Unchecked="CbMiniaturas_Unchecked" Foreground="White" BorderBrush="{x:Null}" Background="White"/>
+            <CheckBox x:Name="cbFotos" Content="Fotos" Unchecked="CbFotos_Unchecked" Checked="CbFotos_Checked" Foreground="White" BorderBrush="{x:Null}" Background="White"/>
+            <CheckBox x:Name="cbSalvarFotos" Content="Salvar Fotos" Visibility="Collapsed" Foreground="White" BorderBrush="{x:Null}" Background="White"/>
+            <CheckBox x:Name="cbSalvarMiniaturas" Content="Salvar Miniaturas" Visibility="Collapsed" Foreground="White" BorderBrush="{x:Null}" Background="White"/>
+            <CheckBox x:Name="cbOverride" Content="Sobrescrever" Visibility="Collapsed" Foreground="White" BorderBrush="{x:Null}" Background="White"/>
             <WrapPanel Width="143.343">
-                <Label x:Name="lbErros_Copy" Content="Erros:" d:LayoutOverrides="TopPosition, BottomPosition" Padding="5,5,2,5"/>
-                <Label x:Name="lbErros" Content="0" d:LayoutOverrides="TopPosition, BottomPosition" Padding="0,5,5,5"/>
+                <Label x:Name="lbErros_Copy" Content="Erros:" d:LayoutOverrides="TopPosition, BottomPosition" Padding="5,5,2,5" Foreground="White"/>
+                <Label x:Name="lbErros" Content="0" d:LayoutOverrides="TopPosition, BottomPosition" Padding="0,5,5,5" Foreground="White"/>
             </WrapPanel>
             <WrapPanel VerticalAlignment="Top" Width="143.343">
-                <Label x:Name="lbProgress" Content="0" d:LayoutOverrides="TopPosition, BottomPosition" Padding="5,5,2,5"/>
-                <Label x:Name="label2" Content="%" d:LayoutOverrides="TopPosition, BottomPosition" Padding="0,5,5,5"/>
+                <Label x:Name="lbProgress" Content="0" d:LayoutOverrides="TopPosition, BottomPosition" Padding="5,5,2,5" Foreground="White"/>
+                <Label x:Name="label2" Content="%" d:LayoutOverrides="TopPosition, BottomPosition" Padding="0,5,5,5" Foreground="White"/>
             </WrapPanel>
             <ProgressBar x:Name="progressBar" BorderBrush="{x:Null}" Height="20" Width="143.343"/>
-            <Button x:Name="btnIniciar" Content="Iniciar" BorderBrush="{x:Null}" Background="{x:Null}" Click="BtnIniciar_Click" Height="30"/>
+            <Button x:Name="btnIniciar" Content="Iniciar" BorderBrush="{x:Null}" Background="{x:Null}" Click="BtnIniciar_Click" Height="30" Foreground="White"/>
         </WrapPanel>
 
     </Grid>
-</Window>
+</UserControl>

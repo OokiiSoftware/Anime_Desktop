@@ -1,5 +1,6 @@
 ﻿using Anime.Auxiliar;
 using Anime.Modelo;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -8,6 +9,7 @@ using System.Windows.Controls;
 using System.Threading.Tasks;
 using System.Web;
 using Anime.Translator;
+using System.IO;
 
 namespace Anime.Pages
 {
@@ -23,6 +25,7 @@ namespace Anime.Pages
         private readonly Tradutor translator = new Tradutor();
 
         private Dictionary<string, AnimeCollection> currentList;
+        private Dictionary<string, string> caracteresEspeciais;
 
         class Parts
         {
@@ -92,9 +95,11 @@ namespace Anime.Pages
         {
             DataObject.AddPastingHandler(tbLinks.box, OnPaste);
 
-            tbId.box.Text = Properties.Settings.Default.currentID.ToString();
+            tbId.box.Text = Properties.Settings.Default.currentID;
             tbLetra.box.Text = Properties.Settings.Default.letra;
             tbLinks.box.Text = Properties.Settings.Default.currentLinks;
+
+            Import.LoadCaracteresEspeciais();
         }
 
         private async void Iniciar()
@@ -111,7 +116,7 @@ namespace Anime.Pages
             }
 
             Properties.Settings.Default.letra = tbLetra.box.Text;
-            Properties.Settings.Default.currentID = Convert.ToInt32(tbId.box.Text);
+            Properties.Settings.Default.currentID = tbId.box.Text;
             Properties.Settings.Default.Save();
 
             try
@@ -122,6 +127,7 @@ namespace Anime.Pages
                 //string[] filtros = { "html" };
                 List<string> filesPath = new List<string>(tbLinks.box.Text.Split('\n'));// Import.GetArquivosDaPasta(Paths.HTML, filtros, isRecursiva: false);
                 List<string> erros = new List<string>();
+                List<string> avisos = new List<string>();
                 filesPath.RemoveAll(e => string.IsNullOrWhiteSpace(e));
 
                 Log.Msg(TAG, "Iniciar", "Init");
@@ -129,9 +135,9 @@ namespace Anime.Pages
                 {
                     using (WebClient client = new WebClient())
                     {
-                        string itemText = client.DownloadString(itemPath);
                         try
                         {
+                            string itemText = client.DownloadString(itemPath);
                             //string itemText = Import.GetFileText(itemPath);
                             if (itemText == null) continue;
 
@@ -174,10 +180,23 @@ namespace Anime.Pages
                             string miniatura = GetValue(miniatura_Int, itemText, '\"');
                             string tipo = GetValue(tipo_Int, itemText, '\"').ToUpper();
 
+                            if (tipo.ToLower().Equals("music"))
+                            {
+                                avisos.Add("Music");
+                                continue;
+                            }
+                            else if (tipo.ToLower().Equals("airing"))
+                            {
+                                var result = MessageBox.Show($"{titulo_1}\n\nDeseja inseri-lo?", "Tipo Desconhecido", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                                if (result == MessageBoxResult.No)
+                                    continue;
+                                tipo = "Unknown";
+                            }
+
                             if (sinopse.Contains("No synopsis"))
                                 sinopse = "";
                             else
-                                sinopse = RemoverSimbolos(sinopse);
+                                sinopse = Import.RemoverSimbolos(sinopse, copySimbolo: true, isPtBr: false);
                             //Log.Msg(TAG, "Iniciar", sinopse);
                             sinopse = await Traduzir(sinopse);
                             ratting = await Traduzir(ratting);
@@ -209,6 +228,12 @@ namespace Anime.Pages
                                 generosS += temp + ";";
                             }
                             //generosS.Remove(generosS.Length-1, 1);
+                            if (generosS.ToLower().Contains("hental"))
+                            {
+                                avisos.Add("Hental");
+                                continue;
+                            }
+
                             generosS = await Traduzir(generosS);
                             generos.AddRange(generosS.Split(';'));
 
@@ -255,6 +280,14 @@ namespace Anime.Pages
                     if (result2 != MessageBoxResult.Yes) return;
                 }
 
+                if (avisos.Count > 0)
+                {
+                    string msg = "";
+                    foreach (string s in avisos)
+                        msg += s + "\n";
+                    MessageBox.Show(msg, "Não adicionado " + avisos.Count + " Items", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+
                 AnimeCollection.SaveFile(letra, currentList);
                 OnAddItem?.Invoke(currentList[letra + tbId.box.Text]);
 
@@ -263,8 +296,7 @@ namespace Anime.Pages
                 string novoID = id.ToString("0000");
                 tbId.box.Text = novoID;
 
-                Properties.Settings.Default.currentID = id;
-                Properties.Settings.Default.letra = string.Empty;
+                Properties.Settings.Default.currentID = novoID;
                 Properties.Settings.Default.Save();
             }
             catch(Exception ex)
@@ -410,22 +442,83 @@ namespace Anime.Pages
                     if (text.Length < (i - 1) || text[i] == charFim) break;
                     value += text[i];
                 }
-            return RemoverSimbolos(value);
+            return Import.RemoverSimbolos(value, copySimbolo: true, isPtBr: false);
         }
-
+/*
         private string RemoverSimbolos(string value)
         {
-            return HttpUtility.HtmlDecode(value)
-                .Replace("\r", "")
-                .Replace("<i>", "")
-                .Replace("</i>", "")
-                .Replace("<br>", "")
-                .Replace("<br/>", "")
-                .Replace("<br />", "")
-                .Replace("â™¥>", "♥")
-                .Replace("â˜†", "☆");
+            string temp = HttpUtility.HtmlDecode(value);
+            if (temp.Contains("â"))
+            {
+                string caractere = temp.Substring(temp.IndexOf("â"), 3);
+                Clipboard.SetText(caractere);
+
+                if (caracteresEspeciais == null)
+                    if (!LoadCaracteresEspeciais())
+                        throw new Exception("CaracteresEspecial.json não encontrado");
+
+                if (!caracteresEspeciais.ContainsKey(caractere))
+                {
+                    var result = MessageBox.Show(
+                    temp + "\n\nDeseja Ler os caracteres especiais novamente?",
+                    "Caractere Especial",
+                    MessageBoxButton.YesNoCancel,
+                    MessageBoxImage.Exclamation);
+
+                    switch (result)
+                    {
+                        case MessageBoxResult.Cancel:
+                            throw new Exception("Caractere Especial");
+                        case MessageBoxResult.Yes:
+                            LoadCaracteresEspeciais();
+                            break;
+                        case MessageBoxResult.No:
+                            return temp;
+                    }
+                }
+
+                if (!caracteresEspeciais.ContainsKey(caractere))
+                    return RemoverSimbolos(value);
+                temp = temp.Replace(caractere, caracteresEspeciais[caractere]);
+
+                foreach(var t in caracteresEspeciais)
+                    temp = temp.Replace(t.Key, t.Value);
+                
+                return RemoverSimbolos(temp);
+
+            }
+            return temp;
+                //.Replace("\r", "")
+                //.Replace("<i>", "")
+                //.Replace("</i>", "")
+                //.Replace("<br>", "")
+                //.Replace("<br/>", "")
+                //.Replace("<br />", "")
+                //.Replace("â˜…", "★")
+                //.Replace("â˜†", "☆")
+                //.Replace("â™¥", "♥")
+                //.Replace("â€“", "–");
         }
 
+        private bool LoadCaracteresEspeciais()
+        {
+            string CaracteresEspeciais = "CaracteresEspeciais.json";
+            if (!File.Exists(CaracteresEspeciais))
+                return false;
+
+            try
+            {
+                string jsonS = File.ReadAllText(CaracteresEspeciais);
+                caracteresEspeciais = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonS);
+            }
+            catch (Exception ex)
+            {
+                Log.Erro(TAG, ex);
+            }
+            
+            return true;
+        }
+*/
         private async Task<string> Traduzir(string value)
         {
             if (string.IsNullOrWhiteSpace(value))

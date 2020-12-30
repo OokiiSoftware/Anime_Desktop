@@ -29,9 +29,10 @@ namespace Anime.Modelo
         {
             id = item.id;
             nome = item.nome;
-            nome2 = item.nome2;
             miniatura = item.miniatura;
             data = item.data;
+            if (!string.IsNullOrWhiteSpace(item.nome2))
+                nome2 = item.nome2;
         }
         public string id { get; set; }
         public string nome { get; set; }
@@ -44,13 +45,17 @@ namespace Anime.Modelo
         public AnimeComplemento(AnimeItem item)
         {
             id = item.id;
-            foto = item.foto;
             link = item.link;
             tipo = item.tipo;
-            sinopse = item.sinopse;
             episodios = item.episodios;
-            maturidade = item.maturidade;
             pontosBase = item.pontosBase;
+
+            if (!string.IsNullOrWhiteSpace(item.foto))
+                foto = item.foto;
+            if (!string.IsNullOrWhiteSpace(item.sinopse))
+                sinopse = item.sinopse;
+            if (!string.IsNullOrWhiteSpace(item.maturidade))
+                maturidade = item.maturidade;
         }
         public string id { get; set; }
         public string foto { get; set; }
@@ -106,11 +111,17 @@ namespace Anime.Modelo
 
         public string nome { get; set; }
         public string nome2 { get; set; }
+        private char letra;
+
         public Dictionary<string, AnimeItem> items { get; set; } = new Dictionary<string, AnimeItem>();
         
         public List<string> generos { get; set; } = new List<string>();
         public List<string> parentes { get; set; } = new List<string>();
 
+        public char Letra()
+        {
+            return letra;
+        }
         public int QuantChars()
         {
             int i = 0;
@@ -131,6 +142,8 @@ namespace Anime.Modelo
                 {
                     var json = File.ReadAllText(animeFileName);
                     list = JsonConvert.DeserializeObject<Dictionary<string, AnimeCollection>>(json);
+                    foreach (var temp in list.Values)
+                        temp.letra = letra[0];
                 }
                 else
                 {

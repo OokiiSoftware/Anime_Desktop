@@ -8,10 +8,11 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace Anime.Pages
 {
-    public partial class TestesPage : Window
+    public partial class TestesPage : UserControl
     {
         #region Variaveis
         const string TAG = "TestesPage";
@@ -22,6 +23,7 @@ namespace Anime.Pages
         private bool isInProgress = false;
         private bool incluirVariaveis;
         private bool incluirMiniaturas;
+        private bool consertarProblemas;
         private bool incluirFotos;
         private bool salvarFotos;
         private bool salvarMiniaturas;
@@ -39,7 +41,6 @@ namespace Anime.Pages
             OnProgress += BuscarErrosProgress;
             backgroundWorker.DoWork += DoWork;
             backgroundWorker.RunWorkerCompleted += RunWorkerCompleted;
-            Closing += Window_Closing;
         }
 
         #region Eventos
@@ -82,6 +83,16 @@ namespace Anime.Pages
                 cbOverride.Visibility = Visibility.Collapsed;
         }
 
+        private void CbVariaveis_Checked(object sender, RoutedEventArgs e)
+        {
+            cbConsertar.Visibility = Visibility.Visible;
+        }
+
+        private void CbVariaveis_Unchecked(object sender, RoutedEventArgs e)
+        {
+            cbConsertar.Visibility = Visibility.Collapsed;
+        }
+
         #endregion
 
         #region Metodos
@@ -105,6 +116,7 @@ namespace Anime.Pages
             incluirFotos = cbFotos.IsChecked.Value;
             salvarMiniaturas = cbSalvarMiniaturas.IsChecked.Value;
             salvarFotos = cbSalvarFotos.IsChecked.Value;
+            consertarProblemas = cbConsertar.IsChecked.Value;
 
             erros.Clear();
             progressBar.Value = 0;
@@ -118,7 +130,7 @@ namespace Anime.Pages
             isInProgress = false;
         }
 
-        private void DoWork(object sender, DoWorkEventArgs e)
+        private void _DoWork(object sender, DoWorkEventArgs e)
         {
             Log.Msg(TAG, "BuscarErros", "Init");
 
@@ -128,6 +140,7 @@ namespace Anime.Pages
             bool incluirFotos = this.incluirFotos;
             bool salvarFotos = this.salvarFotos;
             bool salvarMiniaturas = this.salvarMiniaturas;
+            bool consertarProblemas = this.consertarProblemas;
 
             var allList = new Dictionary<string, AnimeCollection>();
             string[] filtros = { "json" };
@@ -177,6 +190,21 @@ namespace Anime.Pages
                                 erro += ";link vazio";
                             if (string.IsNullOrWhiteSpace(item.sinopse))
                                 erro += ";sinopse vazio";
+
+                            if (consertarProblemas)
+                            {
+                                if (string.IsNullOrWhiteSpace(item.nome2) || item.nome.Equals(item.nome2))
+                                    item.nome2 = null;
+
+                                item.nome = Import.RemoverSimbolos(item.nome);
+                                item.nome2 = Import.RemoverSimbolos(item.nome2);
+                                item.sinopse = Import.RemoverSimbolos(item.sinopse);
+                                item.maturidade = Import.RemoverSimbolos(item.maturidade);
+                                item.tipo = Import.RemoverSimbolos(item.tipo);
+
+                                if (item.tipo.ToLower().Equals("music"))
+                                    itemList.items.Remove(item.id);
+                            }
                         }
 
                         if (incluirMiniaturas)
@@ -212,6 +240,7 @@ namespace Anime.Pages
 
                         if (!string.IsNullOrEmpty(erro))
                             throw new Exception(erro);
+
                     }
                     catch (Exception ex)
                     {
@@ -223,6 +252,178 @@ namespace Anime.Pages
                     progress++;
                     OnProgress?.Invoke((progress / childsCount) * 100.0);
                 }
+
+                if (consertarProblemas)
+                {
+                    AnimeCollection.SaveFile(itemList.Letra(), allList);
+                }
+            }
+        }
+
+        private void DoWork(object sender, DoWorkEventArgs e)
+        {
+            Log.Msg(TAG, "BuscarErros", "Init");
+
+            bool incluirVariaveis = this.incluirVariaveis;
+            bool incluirMiniaturas = this.incluirMiniaturas;
+            bool sobrescreverFotos = this.sobrescreverFotos;
+            bool incluirFotos = this.incluirFotos;
+            bool salvarFotos = this.salvarFotos;
+            bool salvarMiniaturas = this.salvarMiniaturas;
+            bool consertarProblemas = this.consertarProblemas;
+
+            var allList = new Dictionary<string, Dictionary<string, AnimeCollection>>();
+            string[] filtros = { "json" };
+            var letras = Import.GetArquivosDaPasta(Paths.FILES_PATH, filtros);
+            int childsCount = 0;
+
+            foreach (string letraFile in letras)
+            {
+                string letra = Path.GetFileNameWithoutExtension(letraFile);
+                var listTemp = AnimeCollection.LoadFileList(letra);
+                allList.Add(letraFile, listTemp);
+
+                foreach (var key in listTemp.Keys)
+                    if (!allList.ContainsKey(key))
+                    {
+                        childsCount += listTemp[key].items.Count;
+                    }
+                    else Log.Msg(Name, "BtnPublicar", "Key duplicado", key);
+            }
+
+            Log.Msg(TAG, "BuscarErros", "Load OK > PaisCount: " + allList.Count, "ChildsCount: " + childsCount);
+
+            double progress = 0;
+            foreach (var allListItem in allList.Values)
+            {
+                if (!isInProgress) break;
+                foreach (var itemList in allListItem.Values)
+                {
+                    if (!isInProgress) break;
+                    foreach (var item in itemList.items.Values)
+                    {
+                        if (!isInProgress) break;
+                        try
+                        {
+                            string erro = "";
+
+                            if (incluirVariaveis)
+                            {
+                                if (consertarProblemas)
+                                {
+                                    if (string.IsNullOrWhiteSpace(item.nome2) || item.nome.Equals(item.nome2))
+                                        item.nome2 = null;
+
+                                    item.nome = Import.RemoverSimbolos(item.nome);
+                                    item.nome2 = Import.RemoverSimbolos(item.nome2);
+                                    item.sinopse = Import.RemoverSimbolos(item.sinopse);
+                                    item.maturidade = Import.RemoverSimbolos(item.maturidade);
+                                    item.tipo = Import.RemoverSimbolos(item.tipo);
+
+                                    if (item.tipo.ToLower().Equals("music") || item.tipo.ToLower().Equals("airing"))
+                                    {
+                                        MessageBox.Show($"{item.id}", "Tipo Desconhecido", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                    }
+
+                                    if (item.miniatura.Contains("apple-touch-icon-256"))
+                                        item.miniatura = string.Empty;
+
+                                    item.sinopse = item.sinopse.Replace("\n[Escrito por MAL Rewrite]", string.Empty);
+
+                                    string test = "\n(Fonte:";
+                                    if (item.sinopse.Contains(test))
+                                    {
+                                        //Log.Msg(TAG, "consertarProblemas", "Fonte");
+                                        string sinopse = item.sinopse;
+                                        int indexInit = sinopse.IndexOf(test);
+                                        if (indexInit > 0)
+                                        {
+                                            int indexFim = sinopse.IndexOf(")", indexInit +1);
+
+                                            if (indexFim > 1)
+                                            {
+                                                string fonte = sinopse.Substring(indexInit, indexFim - indexInit);
+                                                item.sinopse = item.sinopse.Replace(fonte, string.Empty);
+                                                Log.Msg(TAG, "consertarProblemas", fonte);
+                                            }
+                                        }
+                                        
+                                    }
+                                    
+                                }
+                                else
+                                {
+                                    if (string.IsNullOrWhiteSpace(item.nome))
+                                        erro += "nome vazio";
+                                    if (string.IsNullOrWhiteSpace(item.id))
+                                        erro += ";id vazio";
+                                    if (string.IsNullOrWhiteSpace(item.miniatura))
+                                        erro += ";miniatura vazio";
+                                    if (string.IsNullOrWhiteSpace(item.data))
+                                        erro += ";data vazio";
+                                    if (string.IsNullOrWhiteSpace(item.tipo))
+                                        erro += ";tipo vazio";
+                                    if (string.IsNullOrWhiteSpace(item.foto))
+                                        erro += ";foto vazio";
+                                    if (string.IsNullOrWhiteSpace(item.link))
+                                        erro += ";link vazio";
+                                    if (string.IsNullOrWhiteSpace(item.sinopse))
+                                        erro += ";sinopse vazio";
+                                }
+                            }
+
+                            if (incluirMiniaturas)
+                            {
+                                if (salvarMiniaturas)
+                                {
+                                    string temp = SalvarFoto(item.miniatura, Paths.MINIATURAS, item.id, sobrescreverFotos).Result;
+                                    if (temp != null)
+                                        erro += ";miniatura > " + temp;
+                                }
+                                else
+                                {
+                                    string temp = TestarUrl(item.miniatura);
+                                    if (temp != null)
+                                        erro += ";miniatura > " + temp;
+                                }
+                            }
+
+                            if (!string.IsNullOrEmpty(item.foto) && incluirFotos)
+                            {
+                                if (salvarFotos)
+                                {
+                                    string temp = SalvarFoto(item.foto, Paths.FOTOS, item.id, sobrescreverFotos).Result;
+                                    if (temp != null)
+                                        erro += ";foto > " + temp;
+                                }
+                                else
+                                {
+                                    string temp = TestarUrl(item.foto);
+                                    if (temp != null)
+                                        erro += ";foto > " + temp;
+                                }
+                            }
+
+                            if (!string.IsNullOrEmpty(erro))
+                                throw new Exception(erro);
+                        }
+                        catch (Exception ex)
+                        {
+                            erros.Add(new Error(ItemId: item.id, Descricao: ex.Message));
+                            lbErros.Dispatcher.Invoke(() => lbErros.Content = erros.Count);
+                            Log.Erro(TAG, ex);
+                            continue;
+                        }
+
+                        progress++;
+                        OnProgress?.Invoke((progress / childsCount) * 100.0);
+                    }
+
+                    if (consertarProblemas)
+                        AnimeCollection.SaveFile(itemList.Letra(), allListItem);
+                    
+                }
+                
             }
         }
 
@@ -251,7 +452,7 @@ namespace Anime.Pages
 
         private void BuscarErrosProgress(double value)
         {
-            Log.Msg(TAG, "Buscando Erros", "% " + value.ToString("F"));
+            //Log.Msg(TAG, "Buscando Erros", "% " + value.ToString("F"));
 
             lbProgress.Dispatcher.Invoke(() => lbProgress.Content = value.ToString("F"));
             progressBar.Dispatcher.Invoke(() => progressBar.Value = value);

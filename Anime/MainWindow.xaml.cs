@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Timers;
+using System.Windows;
 using Anime.Auxiliar;
 using Anime.Pages;
 using Anime.SubPage;
@@ -11,6 +12,10 @@ namespace Anime
         private AnimeListPage animeList;
         private AnimeAddPage pgAdd;
         private AutoLoadAnimeData loadAnimeData;
+        private TestesPage testesPage;
+        private LoginPage loginPage;
+
+        private bool loginSucess;
         #endregion
 
         public MainWindow()
@@ -39,6 +44,11 @@ namespace Anime
             frame.Content = pgAdd;
         }
 
+        private void BtnProcurarErros_Click(object sender, RoutedEventArgs e)
+        {
+            frame.Content = testesPage;
+        }
+
         #endregion
 
         #region Metodos
@@ -54,18 +64,27 @@ namespace Anime
             }
             else
             {
+                TimeSleep();
                 var result = await FirebaseOki.Login(user, password);
                 if (result == FirebaseLoginResult.SUCESS)
                     OnLoginSucess();
                 else
-                    LoginPopup();
+                {
+                    var result2 = MessageBox.Show(
+                        "Não foi possivel fazer login automatico, deseja tentar novamente?",
+                        "Auto Login", MessageBoxButton.YesNo, MessageBoxImage.Asterisk);
+                    if (result2 == MessageBoxResult.Yes)
+                        Init();
+                    else
+                        LoginPopup();
+                }
             }
         }
 
         private void LoginPopup()
         {
-            var login = new LoginPage();
-            var result = login.ShowDialog() ?? false;
+            loginPage = new LoginPage();
+            var result = loginPage.ShowDialog() ?? false;
             if (result == true)
                 OnLoginSucess();
             else
@@ -74,6 +93,14 @@ namespace Anime
 
         private void OnLoginSucess()
         {
+            loginSucess = true;
+
+            testesPage = new TestesPage
+            {
+                Margin = new Thickness(0),
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Top,
+            };
             loadAnimeData = new AutoLoadAnimeData
             {
                 Margin = new Thickness(0),
@@ -99,6 +126,25 @@ namespace Anime
             frame.Content = loadAnimeData;
         }
 
+        private void TimeSleep()
+        {
+            int seconds = 40;
+            Timer timer = new Timer(seconds * 1000);
+            timer.Elapsed += (s, e) => {
+                if (!loginSucess) 
+                {
+                    var result = MessageBox.Show("Deseja continuar?", "Tempo exedido", MessageBoxButton.YesNo, MessageBoxImage.Asterisk);
+                    if (result != MessageBoxResult.Yes)
+                        Dispatcher.Invoke(() => { Close(); });
+                }
+                
+                timer.Stop();
+                timer.Dispose();
+            };
+            timer.Start();
+        }
+
         #endregion
+
     }
 }
