@@ -114,6 +114,15 @@ namespace Anime.Auxiliar
             }
         }
         
+        public static async Task<FirebaseLoginResult> AutoLogin()
+        {
+            string user = Properties.Settings.Default.user;
+            string password = Properties.Settings.Default.password;
+            if (user.Trim().Equals("") || password.Trim().Equals(""))
+                return FirebaseLoginResult.CANCEL;
+            
+            return await Login(user, password);
+        }
 
 
         public static class CodError

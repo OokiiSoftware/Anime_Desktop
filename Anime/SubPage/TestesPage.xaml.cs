@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Anime.Pages
+namespace Anime.SubPage
 {
     public partial class TestesPage : UserControl
     {
@@ -85,12 +85,12 @@ namespace Anime.Pages
 
         private void CbVariaveis_Checked(object sender, RoutedEventArgs e)
         {
-            cbConsertar.Visibility = Visibility.Visible;
+            cbCorrigir.Visibility = Visibility.Visible;
         }
 
         private void CbVariaveis_Unchecked(object sender, RoutedEventArgs e)
         {
-            cbConsertar.Visibility = Visibility.Collapsed;
+            cbCorrigir.Visibility = Visibility.Collapsed;
         }
 
         #endregion
@@ -116,7 +116,7 @@ namespace Anime.Pages
             incluirFotos = cbFotos.IsChecked.Value;
             salvarMiniaturas = cbSalvarMiniaturas.IsChecked.Value;
             salvarFotos = cbSalvarFotos.IsChecked.Value;
-            consertarProblemas = cbConsertar.IsChecked.Value;
+            consertarProblemas = cbCorrigir.IsChecked.Value;
 
             erros.Clear();
             progressBar.Value = 0;
@@ -350,6 +350,19 @@ namespace Anime.Pages
                                         
                                     }
                                     
+                                    if (!string.IsNullOrWhiteSpace(item.trailer) && item.trailer.Contains("youtube"))
+                                    {
+                                        string inicio = "https://www.youtube.com/embed/";
+                                        string fim = "?";
+                                        string trailer = item.trailer;
+
+                                        int inicioPosition = trailer.IndexOf(inicio) + inicio.Length;
+                                        int fimPosition = trailer.IndexOf(fim, inicioPosition);
+
+                                        trailer = trailer.Substring(inicioPosition, fimPosition - inicioPosition);
+
+                                        item.trailer = trailer;
+                                    }
                                 }
                                 else
                                 {

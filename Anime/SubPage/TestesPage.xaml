@@ -1,14 +1,14 @@
-﻿<UserControl x:Class="Anime.Pages.TestesPage"
+﻿<UserControl x:Class="Anime.SubPage.TestesPage"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Anime.Pages"
+        xmlns:local="clr-namespace:Anime.SubPage"
         mc:Ignorable="d">
     <Grid>
         <WrapPanel Orientation="Vertical" Margin="10">
             <CheckBox x:Name="cbVariaveis" Content="Variaveis" Checked="CbVariaveis_Checked" Unchecked="CbVariaveis_Unchecked" Foreground="White" BorderBrush="{x:Null}" Background="White"/>
-            <CheckBox x:Name="cbConsertar" Content="Consertar Problemas" Visibility="Collapsed" Foreground="White" BorderBrush="{x:Null}" Background="White"/>
+            <CheckBox x:Name="cbCorrigir" Content="Corrigir Problemas" Visibility="Collapsed" Foreground="White" BorderBrush="{x:Null}" Background="White"/>
             <CheckBox x:Name="cbMiniaturas" Content="Miniaturas" Checked="CbMiniaturas_Checked" Unchecked="CbMiniaturas_Unchecked" Foreground="White" BorderBrush="{x:Null}" Background="White"/>
             <CheckBox x:Name="cbFotos" Content="Fotos" Unchecked="CbFotos_Unchecked" Checked="CbFotos_Checked" Foreground="White" BorderBrush="{x:Null}" Background="White"/>
             <CheckBox x:Name="cbSalvarFotos" Content="Salvar Fotos" Visibility="Collapsed" Foreground="White" BorderBrush="{x:Null}" Background="White"/>

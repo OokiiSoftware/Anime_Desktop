@@ -265,7 +265,7 @@
     <Compile Include="Pages\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\TestesPage.xaml.cs">
+    <Compile Include="SubPage\TestesPage.xaml.cs">
       <DependentUpon>TestesPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="SubPage\AnimeAddPage.xaml.cs">
@@ -306,7 +306,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\TestesPage.xaml">
+    <Page Include="SubPage\TestesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

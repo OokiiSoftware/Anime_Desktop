@@ -11,7 +11,7 @@ using System.Web;
 using Anime.Translator;
 using System.IO;
 
-namespace Anime.Pages
+namespace Anime.SubPage
 {
     public partial class AutoLoadAnimeData : UserControl
     {
@@ -39,8 +39,9 @@ namespace Anime.Pages
             public const string RATTING = "<span class=\"dark_text\">Rating:</span>";
             public const string PONTOS = "<span itemprop=\"ratingValue\" class=\"score-label score-";
             public const string GENEROS = "<span itemprop=\"genre\" style=\"display: none\">";
-            public const string TEMP = "";
+            public const string TRAILER = "<a class=\"iframe js-fancybox-video video-unit promotion\" href=\"";
             public const string LINK = "<meta property=\"og:url\" content=\"";
+            public const string TEMP = "";
         }
 
         #endregion
@@ -147,6 +148,7 @@ namespace Anime.Pages
                             int sinopse_int_init = itemText.IndexOf(Parts.SINOPSE) + Parts.SINOPSE.Length;
                             int sinopse_int_fim = itemText.IndexOf("</p>", sinopse_int_init - Parts.SINOPSE.Length);
 
+                            int trailer_int = itemText.IndexOf(Parts.TRAILER) + Parts.TRAILER.Length;
                             int link_Int = itemText.IndexOf(Parts.LINK) + Parts.LINK.Length;
                             int miniatura_Int = itemText.IndexOf(Parts.MINIATURA) + Parts.MINIATURA.Length;
 
@@ -176,6 +178,7 @@ namespace Anime.Pages
                             string data = GetValue(data_Int, itemText, '<').Replace("\n", "").TrimStart().TrimEnd();
                             string ratting = GetValue(ratting_Int, itemText, '<').Replace("\n", "").TrimStart().TrimEnd();
 
+                            string trailer = GetValue(trailer_int, itemText, '\"')/*.Replace("&amp;", "&")*/;
                             string link = GetValue(link_Int, itemText, '\"');
                             string miniatura = GetValue(miniatura_Int, itemText, '\"');
                             string tipo = GetValue(tipo_Int, itemText, '\"').ToUpper();
@@ -247,7 +250,8 @@ namespace Anime.Pages
                                 maturidade = ratting,
                                 sinopse = sinopse,
                                 episodios = episodios,
-                                pontosBase = pontosBase
+                                pontosBase = pontosBase,
+                                trailer = trailer
                             };
 
                             if (data.Contains(" to "))

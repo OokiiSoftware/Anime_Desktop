@@ -55,7 +55,7 @@ namespace Anime.Ferramentas
                 box.AcceptsReturn = AcceptsReturn;
                 box.PreviewTextInput += Box_PreviewTextInput;
             }
-            setVisibility();
+            SetVisibility();
         }
 
         protected override void OnRender(DrawingContext drawingContext)
@@ -79,10 +79,10 @@ namespace Anime.Ferramentas
             hint.Foreground =
             password.Foreground = Foreground;
 
-            setVisibility();
+            SetVisibility();
         }
 
-        private void setVisibility()
+        private void SetVisibility()
         {
             if (IsPassword)
             {

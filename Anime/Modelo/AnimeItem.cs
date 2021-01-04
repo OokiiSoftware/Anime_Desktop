@@ -16,6 +16,7 @@ namespace Anime.Modelo
         public string foto { get; set; }
         public string miniatura { get; set; }
         public string link { get; set; }
+        public string trailer { get; set; }
         public string sinopse { get; set; }
         public string data { get; set; }
         public int episodios { get; set; }
@@ -23,14 +24,16 @@ namespace Anime.Modelo
         public double pontosBase { get; set; }
         public string tipo { get; set; } = AnimeType.INDEFINIDO.ToString();
     }
-    public class AnimeBasico
+    public class AnimeItemBasico
     {
-        public AnimeBasico(AnimeItem item)
+        public AnimeItemBasico(AnimeItem item)
         {
             id = item.id;
             nome = item.nome;
             miniatura = item.miniatura;
             data = item.data;
+            tipo = item.tipo;
+
             if (!string.IsNullOrWhiteSpace(item.nome2))
                 nome2 = item.nome2;
         }
@@ -39,14 +42,14 @@ namespace Anime.Modelo
         public string nome2 { get; set; }
         public string miniatura { get; set; }
         public string data { get; set; }
+        public string tipo { get; set; } = AnimeType.INDEFINIDO.ToString();
     }
-    public class AnimeComplemento
+    public class AnimeItemComplemento
     {
-        public AnimeComplemento(AnimeItem item)
+        public AnimeItemComplemento(AnimeItem item)
         {
             id = item.id;
             link = item.link;
-            tipo = item.tipo;
             episodios = item.episodios;
             pontosBase = item.pontosBase;
 
@@ -56,59 +59,21 @@ namespace Anime.Modelo
                 sinopse = item.sinopse;
             if (!string.IsNullOrWhiteSpace(item.maturidade))
                 maturidade = item.maturidade;
+            if (!string.IsNullOrWhiteSpace(item.trailer))
+                trailer = item.trailer;
         }
         public string id { get; set; }
         public string foto { get; set; }
         public string link { get; set; }
+        public string trailer { get; set; }
         public int episodios { get; set; }
         public string sinopse { get; set; }
         public string maturidade { get; set; }
         public double pontosBase { get; set; }
-        public string tipo { get; set; } = AnimeType.INDEFINIDO.ToString();
     }
 
     public class AnimeCollection
     {
-        public class Complemento
-        {
-            public List<string> parentes { get; set; } = new List<string>();
-
-            public Complemento(AnimeCollection list) {
-                items = new Dictionary<string, AnimeComplemento>();
-                foreach (var item in list.items.Values)
-                {
-                    if (!items.ContainsKey(item.id))
-                        items.Add(item.id, new AnimeComplemento(item));
-                }
-
-                parentes = list.parentes;
-            }
-
-            public Dictionary<string, AnimeComplemento> items { get; }
-        }
-        public class Basico
-        {
-            public string nome { get; set; }
-            public string nome2 { get; set; }
-            public List<string> generos { get; set; } = new List<string>();
-
-            public Basico(AnimeCollection list)
-            {
-                items = new Dictionary<string, AnimeBasico>();
-                foreach (var item in list.items.Values)
-                {
-                    if (!items.ContainsKey(item.id))
-                        items.Add(item.id, new AnimeBasico(item));
-                }
-
-                generos = list.generos;
-                nome = list.nome;
-                nome2 = list.nome2;
-            }
-
-            public Dictionary<string, AnimeBasico> items { get; }
-        }
-
         public string nome { get; set; }
         public string nome2 { get; set; }
         private char letra;
@@ -171,5 +136,45 @@ namespace Anime.Modelo
             }
         }
 
+    }
+    public class AnimeCollectionBasico
+    {
+        public string nome { get; set; }
+        public string nome2 { get; set; }
+        public List<string> generos { get; set; } = new List<string>();
+
+        public AnimeCollectionBasico(AnimeCollection list)
+        {
+            items = new Dictionary<string, AnimeItemBasico>();
+            foreach (var item in list.items.Values)
+            {
+                if (!items.ContainsKey(item.id))
+                    items.Add(item.id, new AnimeItemBasico(item));
+            }
+
+            generos = list.generos;
+            nome = list.nome;
+            nome2 = list.nome2;
+        }
+
+        public Dictionary<string, AnimeItemBasico> items { get; }
+    }
+    public class AnimeCollectionComplemento
+    {
+        public List<string> parentes { get; set; } = new List<string>();
+
+        public AnimeCollectionComplemento(AnimeCollection list)
+        {
+            items = new Dictionary<string, AnimeItemComplemento>();
+            foreach (var item in list.items.Values)
+            {
+                if (!items.ContainsKey(item.id))
+                    items.Add(item.id, new AnimeItemComplemento(item));
+            }
+
+            parentes = list.parentes;
+        }
+
+        public Dictionary<string, AnimeItemComplemento> items { get; }
     }
 }

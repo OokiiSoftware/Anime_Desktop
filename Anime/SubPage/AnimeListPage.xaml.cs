@@ -49,8 +49,8 @@ namespace Anime.SubPage
         
         private async void BtnPublicar_Click(object sender, RoutedEventArgs e)
         {
-            var allListC = new Dictionary<string, AnimeCollection.Complemento>();
-            var allListB = new Dictionary<string, AnimeCollection.Basico>();
+            var allListC = new Dictionary<string, AnimeCollectionComplemento>();
+            var allListB = new Dictionary<string, AnimeCollectionBasico>();
             string[] filtros = { "json" };
             var letras = new List<string>();
             int childsCount = 0;
@@ -75,8 +75,8 @@ namespace Anime.SubPage
                     foreach (var key in listTemp.Keys)
                         if (!allListC.ContainsKey(key))
                         {
-                            allListC.Add(key, new AnimeCollection.Complemento(listTemp[key]));
-                            allListB.Add(key, new AnimeCollection.Basico(listTemp[key]));
+                            allListC.Add(key, new AnimeCollectionComplemento(listTemp[key]));
+                            allListB.Add(key, new AnimeCollectionBasico(listTemp[key]));
                             childsCount += listTemp[key].items.Count;
                         }
                         else Log.Msg(TAG, "BtnPublicar", "Key duplicado", key);
@@ -92,6 +92,7 @@ namespace Anime.SubPage
 
             Log.Msg(TAG, "BtnPublicar", "Load OK > PaisCount: " + allListC.Count, "ChildsCount: " + childsCount);
 
+            voltar:
             try
             {
                 await FirebaseOki.GetClient
@@ -108,6 +109,12 @@ namespace Anime.SubPage
                 MessageBox.Show(string.Format("Animes: {0}\nRamificações: {1}", allListC.Count, childsCount), "Dados Salvos", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex) {
+                if (ex.Message.Contains("Auth token is expired"))
+                {
+                    var r = await FirebaseOki.AutoLogin();
+                    if (r == FirebaseLoginResult.SUCESS)
+                        goto voltar;
+                }
                 Log.Erro(TAG, ex);
                 MessageBox.Show(ex.Message, "ERRO ao publicar", MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -248,4 +255,4 @@ namespace Anime.SubPage
         #endregion
 
     }
-}
+}// Corrigir Erros ()
