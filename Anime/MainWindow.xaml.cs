@@ -14,6 +14,7 @@ namespace Anime
         private AutoLoadAnimeData loadAnimeData;
         private TestesPage testesPage;
         private LoginPage loginPage;
+        private AtualizarAnimePage atualizarAnimePage;
 
         private bool loginSucess;
         #endregion
@@ -47,6 +48,11 @@ namespace Anime
         private void BtnProcurarErros_Click(object sender, RoutedEventArgs e)
         {
             frame.Content = testesPage;
+        }
+
+        private void BtnAtualizar_Click(object sender, RoutedEventArgs e)
+        {
+            frame.Content = atualizarAnimePage;
         }
 
         #endregion
@@ -113,6 +119,12 @@ namespace Anime
                 HorizontalAlignment = HorizontalAlignment.Stretch
             };
             pgAdd = new AnimeAddPage
+            {
+                Margin = new Thickness(0),
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Top,
+            };
+            atualizarAnimePage = new AtualizarAnimePage
             {
                 Margin = new Thickness(0),
                 HorizontalAlignment = HorizontalAlignment.Stretch,

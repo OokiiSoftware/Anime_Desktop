@@ -14,6 +14,7 @@
             <CheckBox x:Name="cbSalvarFotos" Content="Salvar Fotos" Visibility="Collapsed" Foreground="White" BorderBrush="{x:Null}" Background="White"/>
             <CheckBox x:Name="cbSalvarMiniaturas" Content="Salvar Miniaturas" Visibility="Collapsed" Foreground="White" BorderBrush="{x:Null}" Background="White"/>
             <CheckBox x:Name="cbOverride" Content="Sobrescrever" Visibility="Collapsed" Foreground="White" BorderBrush="{x:Null}" Background="White"/>
+            <CheckBox x:Name="cbUploadFoto" Content="Upload Foto" Foreground="White" BorderBrush="{x:Null}" Background="White"/>
             <WrapPanel Width="143.343">
                 <Label x:Name="lbErros_Copy" Content="Erros:" d:LayoutOverrides="TopPosition, BottomPosition" Padding="5,5,2,5" Foreground="White"/>
                 <Label x:Name="lbErros" Content="0" d:LayoutOverrides="TopPosition, BottomPosition" Padding="0,5,5,5" Foreground="White"/>

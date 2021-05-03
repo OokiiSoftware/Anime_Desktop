@@ -13,6 +13,8 @@ namespace Anime.Translator
 
         #region Variaveis
 
+        public static Tradutor instance = new Tradutor();
+
         public static class Languages
         {
             public const string English = "en";

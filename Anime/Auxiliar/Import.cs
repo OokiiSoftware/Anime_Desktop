@@ -130,4 +130,5 @@ namespace Anime.Auxiliar
         public const string FOTOS = "fotos\\capas\\";
         public const string HTML = "html\\";
     }
+
 }

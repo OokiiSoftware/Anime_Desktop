@@ -257,6 +257,9 @@
     <Compile Include="Ferramentas\CustomTextbox.xaml.cs">
       <DependentUpon>CustomTextbox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SubPage\AtualizarAnime.xaml.cs">
+      <DependentUpon>AtualizarAnime.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Translator\Tradutor.cs" />
     <Compile Include="Modelo\Error.cs" />
     <Compile Include="SubPage\AutoLoadAnimeData.xaml.cs">
@@ -298,6 +301,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="SubPage\AtualizarAnime.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SubPage\AutoLoadAnimeData.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

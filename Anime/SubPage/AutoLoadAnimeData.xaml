@@ -9,11 +9,12 @@
     <Grid>
 
         <Ferramentas:CustomTextbox x:Name="tbLinks" Margin="123.747,10,10,10" Hint="Links" MaxLength="80000" MaxLines="200" MinWidth="260" d:LayoutOverrides="TopMargin, BottomMargin" AcceptsReturn="True" VerticalContentAlignment="Top"/>
-
-        <Ferramentas:CustomTextbox x:Name="tbLetra" HorizontalAlignment="Left" Height="30.657" Margin="10,10,0,0" VerticalAlignment="Top" Width="108.747" Hint="Letra" MaxLength="1" MaxLines="1"/>
-        <Ferramentas:CustomTextbox x:Name="tbId" HorizontalAlignment="Left" Height="30.657" Margin="10,45.657,0,0" VerticalAlignment="Top" Width="108.747" Hint="ID" MaxLines="1" TextImput="Number" MaxLength="2000"/>
-        <Button x:Name="btnTraduzir" Content="Testar Tradutor" Margin="10,77.492,0,0" HorizontalAlignment="Left" Width="108.747" BorderBrush="{x:Null}" FontSize="11" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="BtnTraduzir_Click" VerticalAlignment="Top" Height="35.508"/>
-        <Button x:Name="btnIniciar" Content="Adicionar" HorizontalAlignment="Left" Margin="10,113,0,10" Width="108.747" Background="#FFDDDDDD" BorderBrush="{x:Null}" Click="BtnIniciar_Click" Height="36.606" VerticalAlignment="Top"/>
+        <WrapPanel HorizontalAlignment="Left" Margin="10,10,0,10" Width="108.747">
+            <Ferramentas:CustomTextbox x:Name="tbLetra" Height="30.657" Width="108.747" Hint="Letra" MaxLength="1" MaxLines="1" d:LayoutOverrides="LeftPosition, RightPosition" Margin="0,0,0,2"/>
+            <Ferramentas:CustomTextbox x:Name="tbId" Height="30.657" Width="108.747" Hint="ID" MaxLines="1" TextImput="Number" MaxLength="2000" d:LayoutOverrides="LeftPosition, RightPosition" Margin="0,0,0,2"/>
+            <Button x:Name="btnTraduzir" Content="Testar Tradutor" Width="108.747" BorderBrush="{x:Null}" FontSize="11" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="BtnTraduzir_Click" VerticalAlignment="Top" Height="35.508" d:LayoutOverrides="LeftPosition, RightPosition"/>
+            <Button x:Name="btnIniciar" Content="Adicionar" Width="108.747" Background="#FFDDDDDD" BorderBrush="{x:Null}" Click="BtnIniciar_Click" Height="36.606" VerticalAlignment="Top" d:LayoutOverrides="LeftPosition, RightPosition"/>
+        </WrapPanel>
 
     </Grid>
 </UserControl>
