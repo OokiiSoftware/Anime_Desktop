@@ -29,6 +29,8 @@ namespace Anime.Modelo
         public string tipo { get; set; } = AnimeType.INDEFINIDO.ToString();
 
         public List<string> generos = new List<string>();
+        public List<string> links = new List<string>();
+
         #endregion
 
         class Parts
@@ -197,6 +199,8 @@ namespace Anime.Modelo
             data = item.data;
             tipo = item.tipo;
 
+            links.AddRange(item.links);
+
             if (!string.IsNullOrWhiteSpace(item.nome2))
                 nome2 = item.nome2;
         }
@@ -206,6 +210,8 @@ namespace Anime.Modelo
         public string miniatura { get; set; }
         public string data { get; set; }
         public string tipo { get; set; } = AnimeType.INDEFINIDO.ToString();
+
+        public List<string> links = new List<string>();
     }
     public class AnimeItemComplemento
     {
@@ -233,12 +239,17 @@ namespace Anime.Modelo
         public string sinopse { get; set; }
         public string maturidade { get; set; }
         public double pontosBase { get; set; }
+
     }
 
     public class AnimeCollection
     {
+        public string id { get; set; }
         public string nome { get; set; }
         public string nome2 { get; set; }
+
+        public List<string> links = new List<string>();
+
         private char letra;
 
         public Dictionary<string, AnimeItem> items { get; set; } = new Dictionary<string, AnimeItem>();
@@ -262,6 +273,40 @@ namespace Anime.Modelo
 
         public static Dictionary<string, Dictionary<string, AnimeCollection>> LoadFilesList(List<string> letras)
         {
+            if (letras == null)
+            {
+                letras = new List<string>
+                {
+                    "a",
+                    "b",
+                    "c",
+                    "d",
+                    "e",
+                    "f",
+                    "g",
+                    "h",
+                    "i",
+                    "j",
+                    "k",
+                    "l",
+                    "m",
+                    "n",
+                    "o",
+                    "p",
+                    "q",
+                    "r",
+                    "s",
+                    "t",
+                    "u",
+                    "v",
+                    "w",
+                    "x",
+                    "y",
+                    "z",
+                    "_"
+                };
+            }
+
             var allList = new Dictionary<string, Dictionary<string, AnimeCollection>>();
 
             foreach (string letraFile in letras)
@@ -315,12 +360,16 @@ namespace Anime.Modelo
     }
     public class AnimeCollectionBasico
     {
+        public string id { get; set; }
         public string nome { get; set; }
         public string nome2 { get; set; }
+
+        public List<string> links = new List<string>();
         public List<string> generos { get; set; } = new List<string>();
 
-        public AnimeCollectionBasico(AnimeCollection list)
+        public AnimeCollectionBasico(AnimeCollection list, string key)
         {
+            id = key;
             items = new Dictionary<string, AnimeItemBasico>();
             foreach (var item in list.items.Values)
             {
@@ -328,6 +377,7 @@ namespace Anime.Modelo
                     items.Add(item.id, new AnimeItemBasico(item));
             }
 
+            links.AddRange(list.links);
             generos = list.generos;
             nome = list.nome;
             nome2 = list.nome2;
@@ -337,17 +387,19 @@ namespace Anime.Modelo
     }
     public class AnimeCollectionComplemento
     {
+        public string id { get; set; }
         public List<string> parentes { get; set; } = new List<string>();
 
-        public AnimeCollectionComplemento(AnimeCollection list)
+
+        public AnimeCollectionComplemento(AnimeCollection list, string key)
         {
+            id = key;
             items = new Dictionary<string, AnimeItemComplemento>();
             foreach (var item in list.items.Values)
             {
                 if (!items.ContainsKey(item.id))
                     items.Add(item.id, new AnimeItemComplemento(item));
             }
-
             parentes = list.parentes;
         }
 

@@ -126,6 +126,7 @@ namespace Anime.Auxiliar
     public class Paths
     {
         public const string FILES_PATH = "temp\\";
+        public const string FILES = "files\\";
         public const string MINIATURAS = "fotos\\miniaturas\\";
         public const string FOTOS = "fotos\\capas\\";
         public const string HTML = "html\\";

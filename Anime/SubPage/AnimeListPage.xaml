@@ -18,6 +18,8 @@
         <WrapPanel HorizontalAlignment="Right" Margin="0,0,21.236,0" Width="60">
             <Button x:Name="btnAtualizar" Content="Atualizar" Height="52.708" Width="59.736" BorderBrush="{x:Null}" Click="BtnAtualizar_Click" />
             <Button x:Name="btnPublicar" Content="Publicar" Height="52.708" Width="59.736" BorderBrush="{x:Null}" Click="BtnPublicar_Click" />
+            <Button x:Name="btnCrunchyroll" Content="Crunchy" Height="45" Width="65" Click="BtnCrunchyroll_Click"/>
+            <Button x:Name="btnFunimation" Content="Funimation" Height="45" Width="65" Click="BtnFunimation_Click"/>
         </WrapPanel>
     </Grid>
 </UserControl>

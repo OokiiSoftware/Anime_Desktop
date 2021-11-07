@@ -95,7 +95,7 @@ namespace Anime.SubPage
             Import.LoadCaracteresEspeciais();
         }
 
-        private async void Iniciar()
+        private void Iniciar()
         {
             if (tbLetra.box.Text.Length == 0)
             {
@@ -133,125 +133,6 @@ namespace Anime.SubPage
                             string htmlText = client.DownloadString(itemUrl);
                             //string itemText = Import.GetFileText(itemPath);
                             if (htmlText == null) continue;
-/*
-                            int titulo_1_Int = htmlText.IndexOf(Parts.TITULO_1) + Parts.TITULO_1.Length;
-                            int titulo_2_Int = htmlText.IndexOf(Parts.TITULO_2) + Parts.TITULO_2.Length;
-
-                            int sinopse_int_init = htmlText.IndexOf(Parts.SINOPSE) + Parts.SINOPSE.Length;
-                            int sinopse_int_fim = htmlText.IndexOf("</p>", sinopse_int_init - Parts.SINOPSE.Length);
-
-                            int trailer_int = htmlText.IndexOf(Parts.TRAILER) + Parts.TRAILER.Length;
-                            int link_Int = htmlText.IndexOf(Parts.LINK) + Parts.LINK.Length;
-                            int miniatura_Int = htmlText.IndexOf(Parts.MINIATURA) + Parts.MINIATURA.Length;
-
-                            int tipo_Int = htmlText.IndexOf(Parts.TIPO) + Parts.TIPO.Length;
-                            int epis_Int = htmlText.IndexOf(Parts.EPIS) + Parts.EPIS.Length;
-                            int data_Int = htmlText.IndexOf(Parts.DATA) + Parts.DATA.Length;
-                            int ratting_Int = htmlText.IndexOf(Parts.RATTING) + Parts.RATTING.Length;
-                            int pontos_Int = htmlText.IndexOf(Parts.PONTOS) + Parts.PONTOS.Length + 3;//+3 (7">)
-
-                            List<int> generos_int = new List<int>();
-                            generos_int.Add(htmlText.IndexOf(Parts.GENEROS) + Parts.GENEROS.Length);
-                            int i = 0;
-                            while (true)
-                            {
-                                int position = htmlText.IndexOf("<span itemprop=\"genre\" style=\"display: none\">", generos_int[i]) + 45;
-                                if (position < 50) break;
-                                generos_int.Add(position);
-                                i++;
-                            }
-
-                            string titulo_1 = GetValue(titulo_1_Int, htmlText, '<');
-                            string titulo_2 = GetValue(titulo_2_Int, htmlText, '<');
-                            string pontos = GetValue(pontos_Int, htmlText, '<');
-                            string sinopse = htmlText.Substring(sinopse_int_init, sinopse_int_fim - sinopse_int_init);
-
-                            string epis = GetValue(epis_Int, htmlText, '<').Replace("\n", "").Trim();
-                            string data = GetValue(data_Int, htmlText, '<').Replace("\n", "").TrimStart().TrimEnd();
-                            string ratting = GetValue(ratting_Int, htmlText, '<').Replace("\n", "").TrimStart().TrimEnd();
-
-                            string trailer = GetValue(trailer_int, htmlText, '\"')*//*.Replace("&amp;", "&")*//*;
-                            string link = GetValue(link_Int, htmlText, '\"');
-                            string miniatura = GetValue(miniatura_Int, htmlText, '\"');
-                            string tipo = GetValue(tipo_Int, htmlText, '\"').ToUpper();
-
-                            if (tipo.ToLower().Equals("music"))
-                            {
-                                avisos.Add("Music");
-                                continue;
-                            }
-                            else if (tipo.ToLower().Equals("airing"))
-                            {
-                                var result = MessageBox.Show($"{titulo_1}\n\nDeseja inseri-lo?", "Tipo Desconhecido", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                                if (result == MessageBoxResult.No)
-                                    continue;
-                                tipo = "Unknown";
-                            }
-
-                            if (sinopse.Contains("No synopsis"))
-                                sinopse = "";
-                            else
-                                sinopse = Import.RemoverSimbolos(sinopse, copySimbolo: true, isPtBr: false);
-                            //Log.Msg(TAG, "Iniciar", sinopse);
-                            sinopse = await Traduzir(sinopse);
-                            ratting = await Traduzir(ratting);
-
-                            int episodios = 0;
-                            try
-                            {
-                                episodios = Convert.ToInt32(epis);
-                            }
-                            catch (Exception)
-                            {
-                                episodios = -1;
-                            }
-                            double pontosBase = 0;
-                            try
-                            {
-                                pontosBase = Convert.ToDouble(pontos);
-                            }
-                            catch (Exception) { }
-
-                            List<string> generos = new List<string>();
-                            string generosS = "";
-
-                            for (int j = 0; j < generos_int.Count; j++)
-                            {
-                                string temp = GetValue(generos_int[j], htmlText, '<');
-                                if (temp.ToLower().Contains("slice of life"))
-                                    temp = "Estilo de Vida";
-                                generosS += temp + ";";
-                            }
-                            //generosS.Remove(generosS.Length-1, 1);
-                            if (generosS.ToLower().Contains("hental"))
-                            {
-                                avisos.Add("Hental");
-                                continue;
-                            }
-
-                            generosS = await Traduzir(generosS);
-                            generos.AddRange(generosS.Split(';'));
-*/
-                            /*var anime = new AnimeItem
-                            {
-                                nome = titulo_1,
-                                nome2 = titulo_2,
-                                tipo = tipo,
-                                miniatura = miniatura,
-                                link = link,
-                                maturidade = ratting,
-                                sinopse = sinopse,
-                                episodios = episodios,
-                                pontosBase = pontosBase,
-                                trailer = trailer
-                            };
-
-                            if (data.Contains(" to "))
-                                anime.data = data.Substring(0, data.IndexOf(" to "));
-                            else
-                                anime.data = data;
-
-                            SavePai(titulo_1, titulo_2, generos);*/
 
                             var anime = new AnimeItem(htmlText);
                             if (anime.GenerosToString().Contains("hental"))
@@ -482,3 +363,123 @@ namespace Anime.SubPage
 
     }
 }
+/*
+                            int titulo_1_Int = htmlText.IndexOf(Parts.TITULO_1) + Parts.TITULO_1.Length;
+                            int titulo_2_Int = htmlText.IndexOf(Parts.TITULO_2) + Parts.TITULO_2.Length;
+
+                            int sinopse_int_init = htmlText.IndexOf(Parts.SINOPSE) + Parts.SINOPSE.Length;
+                            int sinopse_int_fim = htmlText.IndexOf("</p>", sinopse_int_init - Parts.SINOPSE.Length);
+
+                            int trailer_int = htmlText.IndexOf(Parts.TRAILER) + Parts.TRAILER.Length;
+                            int link_Int = htmlText.IndexOf(Parts.LINK) + Parts.LINK.Length;
+                            int miniatura_Int = htmlText.IndexOf(Parts.MINIATURA) + Parts.MINIATURA.Length;
+
+                            int tipo_Int = htmlText.IndexOf(Parts.TIPO) + Parts.TIPO.Length;
+                            int epis_Int = htmlText.IndexOf(Parts.EPIS) + Parts.EPIS.Length;
+                            int data_Int = htmlText.IndexOf(Parts.DATA) + Parts.DATA.Length;
+                            int ratting_Int = htmlText.IndexOf(Parts.RATTING) + Parts.RATTING.Length;
+                            int pontos_Int = htmlText.IndexOf(Parts.PONTOS) + Parts.PONTOS.Length + 3;//+3 (7">)
+
+                            List<int> generos_int = new List<int>();
+                            generos_int.Add(htmlText.IndexOf(Parts.GENEROS) + Parts.GENEROS.Length);
+                            int i = 0;
+                            while (true)
+                            {
+                                int position = htmlText.IndexOf("<span itemprop=\"genre\" style=\"display: none\">", generos_int[i]) + 45;
+                                if (position < 50) break;
+                                generos_int.Add(position);
+                                i++;
+                            }
+
+                            string titulo_1 = GetValue(titulo_1_Int, htmlText, '<');
+                            string titulo_2 = GetValue(titulo_2_Int, htmlText, '<');
+                            string pontos = GetValue(pontos_Int, htmlText, '<');
+                            string sinopse = htmlText.Substring(sinopse_int_init, sinopse_int_fim - sinopse_int_init);
+
+                            string epis = GetValue(epis_Int, htmlText, '<').Replace("\n", "").Trim();
+                            string data = GetValue(data_Int, htmlText, '<').Replace("\n", "").TrimStart().TrimEnd();
+                            string ratting = GetValue(ratting_Int, htmlText, '<').Replace("\n", "").TrimStart().TrimEnd();
+
+                            string trailer = GetValue(trailer_int, htmlText, '\"')*/
+/*.Replace("&amp;", "&")*//*;
+                            string link = GetValue(link_Int, htmlText, '\"');
+                            string miniatura = GetValue(miniatura_Int, htmlText, '\"');
+                            string tipo = GetValue(tipo_Int, htmlText, '\"').ToUpper();
+
+                            if (tipo.ToLower().Equals("music"))
+                            {
+                                avisos.Add("Music");
+                                continue;
+                            }
+                            else if (tipo.ToLower().Equals("airing"))
+                            {
+                                var result = MessageBox.Show($"{titulo_1}\n\nDeseja inseri-lo?", "Tipo Desconhecido", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                                if (result == MessageBoxResult.No)
+                                    continue;
+                                tipo = "Unknown";
+                            }
+
+                            if (sinopse.Contains("No synopsis"))
+                                sinopse = "";
+                            else
+                                sinopse = Import.RemoverSimbolos(sinopse, copySimbolo: true, isPtBr: false);
+                            //Log.Msg(TAG, "Iniciar", sinopse);
+                            sinopse = await Traduzir(sinopse);
+                            ratting = await Traduzir(ratting);
+
+                            int episodios = 0;
+                            try
+                            {
+                                episodios = Convert.ToInt32(epis);
+                            }
+                            catch (Exception)
+                            {
+                                episodios = -1;
+                            }
+                            double pontosBase = 0;
+                            try
+                            {
+                                pontosBase = Convert.ToDouble(pontos);
+                            }
+                            catch (Exception) { }
+
+                            List<string> generos = new List<string>();
+                            string generosS = "";
+
+                            for (int j = 0; j < generos_int.Count; j++)
+                            {
+                                string temp = GetValue(generos_int[j], htmlText, '<');
+                                if (temp.ToLower().Contains("slice of life"))
+                                    temp = "Estilo de Vida";
+                                generosS += temp + ";";
+                            }
+                            //generosS.Remove(generosS.Length-1, 1);
+                            if (generosS.ToLower().Contains("hental"))
+                            {
+                                avisos.Add("Hental");
+                                continue;
+                            }
+
+                            generosS = await Traduzir(generosS);
+                            generos.AddRange(generosS.Split(';'));
+*/
+/*var anime = new AnimeItem
+{
+    nome = titulo_1,
+    nome2 = titulo_2,
+    tipo = tipo,
+    miniatura = miniatura,
+    link = link,
+    maturidade = ratting,
+    sinopse = sinopse,
+    episodios = episodios,
+    pontosBase = pontosBase,
+    trailer = trailer
+};
+
+if (data.Contains(" to "))
+    anime.data = data.Substring(0, data.IndexOf(" to "));
+else
+    anime.data = data;
+
+SavePai(titulo_1, titulo_2, generos);*/
